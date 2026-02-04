@@ -1,25 +1,28 @@
 \ProvidesPackage{collegeBeamer}
 
-% required packages
+% --- Required Packages ---
 \RequirePackage{etoolbox}
 \RequirePackage{tikz}
 \RequirePackage{listings}
 \RequirePackage{graphicx}
 \RequirePackage{geometry}
-\RequirePackage{amsfonts, amsmath, bm, oldgerm, lmodern}  % math
+\RequirePackage{amsfonts, amsmath, bm, oldgerm, lmodern} 
 \RequirePackage{verbatim}
 \RequirePackage{animate}
 \RequirePackage{xcolor}
 \RequirePackage{ifplatform}
 
-% --- package options ---
-% languages
+% --- Load Miniframes (The Dots & Sections) ---
+% We load this to get the navigation logic, but we will move it to the footer later
+\useoutertheme[subsection=false]{miniframes}
+
+% --- Package Options & Languages ---
 \newcommand{\tocStr}{Table of Contents}
-\newcommand{\qaStr}{\textsl{Thank you for listening! \\ Your feedback will be highly appreciated!}}
+\newcommand{\qaStr}{\textsl{Thank You!}}
 
 \DeclareOption{en}{
     \renewcommand{\tocStr}{Table of Contents}
-    \renewcommand{\qaStr}{\textsl{Thank you for listening! \\ Your feedback will be highly appreciated!}}
+    \renewcommand{\qaStr}{\textsl{Thank you!}}
 }
 
 \newif\ifcollegebeamer@zh
@@ -30,28 +33,16 @@
   \AtEndOfPackage{%
     \RequirePackage{ifxetex}
     \RequirePackage{xeCJK}
-    
-    % os specific font setting
-    \ifwindows
-        \setCJKmainfont{SimSun}
-    \fi
-    \ifmacosx
-        \setCJKmainfont{Songti SC}
-    \fi
-    \iflinux
-        \setCJKmainfont{Noto Serif CJK SC}
-    \fi
-
+    \ifwindows \setCJKmainfont{SimSun} \fi
+    \ifmacosx \setCJKmainfont{Songti SC} \fi
+    \iflinux \setCJKmainfont{Noto Serif CJK SC} \fi
     \renewcommand{\tocStr}{目录}
     \renewcommand{\qaStr}{\textbf{感谢您的聆听和反馈}}
-    \ifxetex
-    \else
-      \PackageError{collegeBeamer}{请使用 XeLaTeX 编译此模板！}{}
-    \fi
+    \ifxetex \else \PackageError{collegeBeamer}{请使用 XeLaTeX 编译此模板！}{} \fi
   }
 }
 
-% colleges & institutes
+% --- Colleges & Institutes Color/Logo Definitions ---
 \newcommand{\maincolorRGB}{128, 57, 61}
 \newcommand{\colorlogoPath}{src/PolyU/color-logo.png}
 \newcommand{\translogoPath}{src/PolyU/trans-logo.png}
@@ -63,49 +54,42 @@
     \renewcommand{\translogoPath}{src/PolyU/trans-logo.png}
     \renewcommand{\backgroundPath}{src/PolyU/background.png}
 }
-
 \DeclareOption{szu}{
     \renewcommand{\maincolorRGB}{124, 36, 64}
     \renewcommand{\colorlogoPath}{src/SZU/color-logo.pdf}
     \renewcommand{\translogoPath}{src/SZU/trans-logo.pdf}
     \renewcommand{\backgroundPath}{src/SZU/background.png}
 }
-
 \DeclareOption{swu}{
     \renewcommand{\maincolorRGB}{39, 32, 99}
     \renewcommand{\colorlogoPath}{src/SWU/color-logo.png}
     \renewcommand{\translogoPath}{src/SWU/trans-logo.png}
     \renewcommand{\backgroundPath}{src/SWU/background.png}
 }
-
 \DeclareOption{heu}{
     \renewcommand{\maincolorRGB}{2, 77, 162}
     \renewcommand{\colorlogoPath}{src/HEU/color-logo.png}
     \renewcommand{\translogoPath}{src/HEU/trans-logo.png}
     \renewcommand{\backgroundPath}{src/HEU/background.pdf}
 }
-
 \DeclareOption{hit}{
     \renewcommand{\maincolorRGB}{42, 101, 128}
     \renewcommand{\colorlogoPath}{src/HIT/color-logo.png}
     \renewcommand{\translogoPath}{src/HIT/trans-logo.png}
     \renewcommand{\backgroundPath}{src/HIT/background.png}
 }
-
 \DeclareOption{saes}{
     \renewcommand{\maincolorRGB}{5, 103, 81}
     \renewcommand{\colorlogoPath}{src/SAES/color-logo.png}
     \renewcommand{\translogoPath}{src/SAES/trans-logo.png}
     \renewcommand{\backgroundPath}{src/SAES/background.png}
 }
-
 \DeclareOption{zafu}{
     \renewcommand{\maincolorRGB}{0, 133, 75}
     \renewcommand{\colorlogoPath}{src/ZAFU/color-logo.png}
     \renewcommand{\translogoPath}{src/ZAFU/trans-logo.png}
     \renewcommand{\backgroundPath}{src/ZAFU/background.png}
 }
-
 \DeclareOption{red}{
     \renewcommand{\maincolorRGB}{128, 57, 61}
     \renewcommand{\colorlogoPath}{src/Red/color-logo.png}
@@ -113,110 +97,86 @@
     \renewcommand{\backgroundPath}{src/Red/background.png}
     \renewcommand{\qaStr}{\textbf{全世界无产者，联合起来！}}
 }
-
 \DeclareOption{nwpu}{
 	\renewcommand{\maincolorRGB}{34, 54, 102}
 	\renewcommand{\colorlogoPath}{src/NWPU/color-logo.png}
 	\renewcommand{\translogoPath}{src/NWPU/trans-logo.png}
 	\renewcommand{\backgroundPath}{src/NWPU/background.png}
 }
-
 \DeclareOption{CQU}{
-  \renewcommand{\maincolorRGB}{2, 82, 159}  % the theme's main color in RGB
-  \renewcommand{\colorlogoPath}{src/CQU/color-logo.png}  % path to the logo image with background color
-  \renewcommand{\translogoPath}{src/CQU/trans-logo.png}  % path to the logo image with transparent background
-  \renewcommand{\backgroundPath}{src/CQU/background.png}  % path to the background image
+  \renewcommand{\maincolorRGB}{2, 82, 159}
+  \renewcommand{\colorlogoPath}{src/CQU/color-logo.png}
+  \renewcommand{\translogoPath}{src/CQU/trans-logo.png}
+  \renewcommand{\backgroundPath}{src/CQU/background.png}
 }
-
 \DeclareOption{dgut}{
     \renewcommand{\maincolorRGB}{6, 120, 63}
     \renewcommand{\colorlogoPath}{src/DGUT/color-logo.png}
     \renewcommand{\translogoPath}{src/DGUT/trans-logo.png}
     \renewcommand{\backgroundPath}{src/DGUT/background.png}
 }
-
 \DeclareOption{zjut}{
-  \renewcommand{\maincolorRGB}{30, 79, 142}  % the theme's main color in RGB
-  \renewcommand{\colorlogoPath}{src/ZJUT/color-logo.png}  % path to the logo image with background color
-  \renewcommand{\translogoPath}{src/ZJUT/trans-logo.png}  % path to the logo image with transparent background
-  \renewcommand{\backgroundPath}{src/ZJUT/background.png}  % path to the background image
+  \renewcommand{\maincolorRGB}{30, 79, 142}
+  \renewcommand{\colorlogoPath}{src/ZJUT/color-logo.png}
+  \renewcommand{\translogoPath}{src/ZJUT/trans-logo.png}
+  \renewcommand{\backgroundPath}{src/ZJUT/background.png}
 }
 
-\DeclareOption{tnu}{
-  \renewcommand{\maincolorRGB}{182, 2, 3}  % the theme's main color in RGB
-  \renewcommand{\colorlogoPath}{src/TNU/color-logo.png}  % path to the logo image with background color
-  \renewcommand{\translogoPath}{src/TNU/trans-logo.png}  % path to the logo image with transparent background
-  \renewcommand{\backgroundPath}{src/TNU/background.png}  % path to the background image
-}
-
-\DeclareOption{zzu}{
-    \renewcommand{\maincolorRGB}{106, 18, 21}
-    \renewcommand{\colorlogoPath}{src/ZZU/color-logo.png}
-    \renewcommand{\translogoPath}{src/ZZU/trans-logo.png}
-    \renewcommand{\backgroundPath}{src/ZZU/background.png}
-}    
-
-\DeclareOption{xmu}{
-    \renewcommand{\maincolorRGB}{18, 46, 102}
-    \renewcommand{\colorlogoPath}{src/XMU/color-logo.png}
-    \renewcommand{\translogoPath}{src/XMU/trans-logo.png}
-    \renewcommand{\backgroundPath}{src/XMU/background.png}
-}
-
-\DeclareOption{bjtu}{
-  \renewcommand{\maincolorRGB}{54, 101, 193}  % the theme's main color in RGB
-  \renewcommand{\colorlogoPath}{src/BJTU/color-logo.png}  % path to the logo image with background color
-  \renewcommand{\translogoPath}{src/BJTU/trans-logo.png}  % path to the logo image with transparent background
-  \renewcommand{\backgroundPath}{src/BJTU/background.png}  % path to the background image
-}
-
-\DeclareOption{ouc}{
-  \renewcommand{\maincolorRGB}{1, 64, 153}  % the theme's main color in RGB
-  \renewcommand{\colorlogoPath}{src/OUC/color-logo.png}  % path to the logo image with background color
-  \renewcommand{\translogoPath}{src/OUC/trans-logo.png}  % path to the logo image with transparent background
-  \renewcommand{\backgroundPath}{src/OUC/background.png}  % path to the background image
+\DeclareOption{iitb}{
+  \renewcommand{\maincolorRGB}{0, 51, 102}
+  \renewcommand{\colorlogoPath}{src/IITB/color-logo.png}
+  \renewcommand{\translogoPath}{src/IITB/trans-logo.png}
+  \renewcommand{\backgroundPath}{src/IITB/background.jpg}
 }
 
 \ProcessOptions\relax
 
-% --- typeset & elements settings ---
-% force 16:9 aspect ratio
+% --- General Settings ---
 \geometry{paperwidth=16cm,paperheight=9cm}
 
-% logo
+% --- Logo Setup ---
 \pgfdeclareimage[width=0.09\paperwidth]{colorlogo}{\colorlogoPath}
 \pgfdeclareimage[width=0.09\paperwidth]{translogo}{\translogoPath}
 \newcommand{\@makelogo}{colorlogo}
 
-\setbeamertemplate{headline}{\hspace{0.06\textwidth}\pgfuseimage{\@makelogo}} % put the logo in each slide's top left area
+% Restore the Headline to ONLY show the logo 
+% (Miniframes tries to put navigation here, but we overwrite it)
+\setbeamertemplate{headline}{ \hspace{0.06\textwidth} \raisebox{-1em}{\pgfuseimage{\@makelogo}} }
 
-% color
+% --- Colors ---
 \definecolor{maincolor}{RGB}{\maincolorRGB}
 \definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
 \definecolor{morelightgray}{rgb}{0.9, 0.9, 0.9}
+
+% Configure Miniframes colors to match Main Color
+\setbeamercolor{section in head/foot}{fg=white, bg=maincolor}
+\setbeamercolor{mini frame}{fg=white!50!maincolor, bg=maincolor} % dots
+\setbeamercolor{mini frame in current section}{fg=white, bg=maincolor} % active dots
 
 \newcommand{\themecolor}[1]{
     \ifstrequal{#1}{colorbg}{
         \renewcommand{\@makelogo}{translogo}
         \setbeamercolor{normal text}{fg=white, bg=maincolor}
         \setbeamercolor{structure}{fg=white}
+        % Adjust footer color if background is colored
+        \setbeamercolor{section in head/foot}{fg=maincolor, bg=white}
     }{
         \renewcommand{\@makelogo}{colorlogo}
         \setbeamercolor{normal text}{fg=darkgray, bg=white}
         \setbeamercolor{structure}{fg=maincolor}
+        % Reset footer color
+        \setbeamercolor{section in head/foot}{fg=white, bg=maincolor}
     }
 }
-\themecolor{white} % default: white theme
-% P.S. Beamer colors should be set in the preamble. It often works fine in the document itself, but NOT for normal text foreground. Thus \themecolor should only be called from the preamble
+\themecolor{white}
 
 \setbeamercolor{title}{fg=maincolor}
 \setbeamercolor{alerted text}{fg=maincolor}
 \setbeamercolor{author}{fg=black}
 \setbeamercolor{date}{fg=black}
 
-% font
-% \renewcommand{\familydefault}{\sfdefault}  % sans-serif
 \usefonttheme{serif}
+% \usefonttheme{professionalfonts}
 
 \AtEndOfPackage{%
   \ifcollegebeamer@zh
@@ -229,57 +189,61 @@
 \setbeamerfont{subtitle}{series=\mdseries, size=\normalsize}
 \setbeamerfont{author}{size=\normalsize}
 \setbeamerfont{date}{size=\normalsize}
-
 \setbeamerfont{frametitle}{series=\bfseries}
 \setbeamerfont{framesubtitle}{series=\mdseries}
-\setbeamerfont{footline}{size=\scriptsize}
+\setbeamerfont{footline}{size=\tiny}
 
-% no navigation symbols
+% --- Navigation Symbols ---
+% We remove standard symbols because we are using the Miniframes bar
 \setbeamertemplate{navigation symbols}{}
 
-% footline
-\newcommand{\@footlinepayoff}{\@SINTEFmotto}
-\setbeamertemplate{footline}{
-    \begin{beamercolorbox}[wd=\textwidth, ht=5mm, dp=3mm, rightskip=1cm]{footline}
-    \usebeamerfont{footline}\hfill\@footlinepayoff
-    \end{beamercolorbox}
+% --- Footer (The Progress Bar + Page Number) ---
+% We define a custom footline that contains the Miniframes navigation
+% --- Footer (The Progress Bar + Navigation) ---
+
+% 1. Define how the section title looks (Wrapped text)
+\setbeamertemplate{section in head/foot}{%
+    \parbox[b]{2cm}{
+    \raggedright     
+    \insertsectionhead \par%
+    \vspace{2pt}%
+    }%
 }
 
-\newcommand{\footlinecolor}[1]{
-    % if #1 is empty, makes footline transparent
-    \ifstrempty{#1}{
-        \renewcommand{\@footlinepayoff}{}
-        \setbeamercolor{footline}{bg=}
-    }{
-        \renewcommand{\@footlinepayoff}{\@SINTEFmotto}
-        \setbeamercolor{footline}{fg=white, bg=#1}
-    }
-}
-\footlinecolor{} % default: no footline
 
-% block
+\setbeamertemplate{footline}{%
+\leavevmode
+    \begin{beamercolorbox}[wd=\paperwidth]{section in head/foot}
+        \vspace{4ex}
+        \insertnavigation{\paperwidth}
+        \vspace{1.5ex}
+    \end{beamercolorbox}%
+}
+
+
+
+% --- Block Styles ---
 \setbeamertemplate{blocks}[rounded]
-\setbeamerfont{block title}{series=\centering, size=\small}
+\setbeamerfont{block title}{series=\bfseries, size=\small}
 \setbeamerfont{block body}{size=\scriptsize}
 \setbeamercolor{block title}{fg=airforceblue, bg=morelightgray}
 \setbeamercolor{block body}{fg=darkgray, bg=morelightgray}
 
-% bullets
+% --- List Styles ---
 \setbeamertemplate{itemize item}{\textbullet}
 \setbeamertemplate{itemize subitem}{\textemdash}
 \setbeamertemplate{itemize subsubitem}{\ensuremath{\circ}}
 
-% table of cotents
-\setbeamertemplate{section in toc}{$\blacktriangleright$~\inserttocsection}  % section name format
-\setbeamertemplate{subsection in toc}{}  % don't present subsection
+% --- Table of Contents ---
+\setbeamertemplate{section in toc}{$\blacktriangleright$~\inserttocsection}
+\setbeamertemplate{subsection in toc}{}
 
-% code bolck setting
+% --- Code Listings ---
 \definecolor{codegreen}{RGB}{101,218,120}
 \definecolor{darkgreen}{RGB}{93,158,82}
 \definecolor{darkyellow}{RGB}{245,194,105}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
 \lstdefinestyle{mystyle}{
     commentstyle=\color{airforceblue},
@@ -293,29 +257,21 @@
     keepspaces=true,
     numbers=left,
     numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
     tabsize=4,
     xleftmargin=10pt,
     xrightmargin=10pt,
 }
-
 \lstset{style=mystyle}
 
-% --- section & frame setting ---
-% subsection
+% --- Section Transition Slides ---
 \newcommand{\strsubsec}{Section \thesection.\thesubsection}
 
-% presents subtitle on each frame
 \makeatletter
     \pretocmd\beamer@checkframetitle{\framesubtitle{\thesection \, \secname}}
 \makeatother
 
-% avoid numbering of frames that are breaked into multiply slides
 \setbeamertemplate{frametitle continuation}{}
 
-% section page with the current section highlighted
 \AtBeginSection[]
 {
     \begingroup
@@ -327,7 +283,6 @@
     \endgroup
 }
 
-% subsection title page
 \AtBeginSubsection[]
 {
     \begin{frame}{\,}{\thesection \, \secname}
@@ -340,8 +295,7 @@
     \end{frame}
 }
 
-% --- page elements ---
-% frame title & subtitle layout
+% --- Frame Title ---
 \setbeamertemplate{frametitle}{
     \vspace*{-3.5ex}
     \begin{beamercolorbox}[leftskip=2cm]{frametitle}
@@ -350,35 +304,76 @@
     \end{beamercolorbox}
 }
 
-% title page
-\setbeamertemplate{title page}{
-    \hspace{-12mm}  % pull back the box in an inelegant way - but it works!
-    \begin{beamercolorbox}[wd=0.9\textwidth, sep=10pt, leftskip=8mm]{title}
-        {\usebeamerfont{title}\inserttitle}\\
-        \vskip5pt{\usebeamerfont{subtitle}\insertsubtitle}\\
-        \vskip5pt{\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}\\
-        \vskip5pt{\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate}
-    \end{beamercolorbox}
+% --- Split Title Logic ---
+\newbool{splittitle}
+\newcommand{\cbSplitBgPath}{\backgroundPath}
+
+\newcommand{\useSplitBackground}[1][\backgroundPath]{
+    \booltrue{splittitle}
+    \renewcommand{\cbSplitBgPath}{#1}
 }
 
+\newcommand{\cbTikzSplitSlide}[1]{%
+  \rule{0.4\paperwidth}{0pt}%
+  \begin{tikzpicture}
+    \clip (-0.1\paperwidth,-0.5\paperheight) -- 
+          ( 0.5\paperwidth,-0.5\paperheight) -- 
+          ( 0.5\paperwidth, 0.5\paperheight) -- 
+          ( 0.1\paperwidth, 0.5\paperheight) -- cycle; 
+    \node at (0.2\paperwidth,0) {%
+      \includegraphics[height=\paperheight]{#1}%
+    };
+  \end{tikzpicture}
+}
+
+% Title page Definition
 \renewcommand{\maketitle}{
     \begingroup
         \setbeamertemplate{footline}{}
+        % \setbeamertemplate{headline}{} % Uncomment to hide logo on title page
+        
         \setbeamertemplate{background}{
-          \includegraphics[height=\paperheight]{\backgroundPath}
+          \ifbool{splittitle}{%
+             \cbTikzSplitSlide{\cbSplitBgPath}
+          }{%
+             \includegraphics[height=\paperheight]{\backgroundPath}
+          }
         }
+        
+        \ifbool{splittitle}{
+            \setbeamertemplate{title page}{
+                \hspace{-12mm}
+                \begin{beamercolorbox}[wd=0.55\textwidth, sep=10pt, leftskip=8mm]{title}
+                    {\usebeamerfont{title}\inserttitle}\\
+                    \vskip5pt{\usebeamerfont{subtitle}\insertsubtitle}\\
+                    \vskip5pt{\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}\\
+                    \vskip5pt{\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate}
+                \end{beamercolorbox}
+            }
+        }{
+             \setbeamertemplate{title page}{
+                \hspace{-12mm}
+                \begin{beamercolorbox}[wd=0.9\textwidth, sep=10pt, leftskip=8mm]{title}
+                    {\usebeamerfont{title}\inserttitle}\\
+                    \vskip5pt{\usebeamerfont{subtitle}\insertsubtitle}\\
+                    \vskip5pt{\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor}\\
+                    \vskip5pt{\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate}
+                \end{beamercolorbox}
+            }
+        }
+
         \begin{frame}
             \titlepage
         \end{frame}
     \endgroup
 }
 
-% Q&A page
+% --- Q&A Page ---
 \newcommand{\QApage}{
     \begingroup
         \setbeamertemplate{footline}{}
+        \setbeamertemplate{headline}{}
         \themecolor{colorbg}
-        
         \begin{frame}{}
             \centering
             \begin{minipage}{\textwidth}
@@ -391,47 +386,164 @@
     \endgroup
 }
 
-% bibliography page
+% --- Bibliography ---
 \newcommand{\bibliographpage}{
     \section{References}
-
     \begingroup
     \themecolor{colorbg}
+    \setbeamertemplate{footline}{}
     \begin{frame}[allowframebreaks]{References}{\,}
         \tiny
         \printbibliography[heading=none]
     \end{frame}
-\endgroup
+    \endgroup
 }
 
-% --- commands ---
-% set colored hyperlinks command
+% --- Helper Commands ---
 \newcommand{\bhref}[2]{\textcolor{airforceblue}{\href{#1}{#2}}}
-
-% centering paragraph statement
-\newcommand{\centerstate}[1]{
-    \centering
-    \begin{columns}
-        \begin{column}{0.8\textwidth}
-            #1
-        \end{column}
-    \end{columns}
-}
-
+\newcommand{\centerstate}[1]{\centering\begin{columns}\begin{column}{0.8\textwidth}#1\end{column}\end{columns}}
 \newcommand{\tbf}[1]{\texttt{\textcolor{airforceblue}{[#1]}}}
-
-% coloured textbf
 \newcommand{\ctextbf}[1]{\textbf{\textcolor{maincolor}{#1}}}
 \newcommand{\btextbf}[1]{\textbf{\textcolor{airforceblue}{#1}}}
-
-% coloured textsl
 \newcommand{\ctextsl}[1]{\textsl{\textcolor{maincolor}{#1}}}
 \newcommand{\btextsl}[1]{\textsl{\textcolor{airforceblue}{#1}}}
-
-% coloured emph
 \newcommand{\cemph}[1]{\emph{\textcolor{maincolor}{#1}}}
 \newcommand{\bemph}[1]{\emph{\textcolor{airforceblue}{#1}}}
-
-% coloured texttt
 \newcommand{\ctexttt}[1]{\texttt{\textcolor{maincolor}{#1}}}
 \newcommand{\btexttt}[1]{\texttt{\textcolor{airforceblue}{#1}}}
+
+
+% =============================================================
+% === LU THEME INTEGRATION (Custom Colors & Blocks) ===
+% =============================================================
+
+% --- 1. Define LU Colors ---
+\definecolor{darkblueLU}{HTML}{001158}
+\definecolor{midblueLU}{HTML}{BCD2FF}
+\definecolor{boxLU}{HTML}{E7E9F2}
+\definecolor{iitbBlue}{HTML}{003366}
+
+\definecolor{redLU}{HTML}{BE1908}
+\definecolor{orangeLU}{HTML}{F46E32}
+\definecolor{lightgreenLU}{HTML}{9EBA2E}
+\definecolor{darkgreenLU}{HTML}{2C712D}
+\definecolor{turquoiseLU}{HTML}{34A3A9}
+\definecolor{violetLU}{HTML}{B02079}
+\definecolor{lightblueLU}{HTML}{CAD9FF}
+
+% --- 2. Block Definitions ---
+\newlength{\BlockTitlePadV}
+\setlength{\BlockTitlePadV}{0.5ex}
+\newlength{\BlockBodyPadV}
+\setlength{\BlockBodyPadV}{0.5ex}
+
+\newcommand{\LUdefineblock}[5]{%
+    \defbeamertemplate*{#1 begin}{rounded padded}{%
+        \par\vskip\smallskipamount%
+        \begin{beamerboxesrounded}[
+            upper=#2,
+            lower=#3,
+            shadow=false, % Flat look
+            width=\linewidth
+        ]{%
+            \vspace{\BlockTitlePadV}%
+            \usebeamerfont*{#4}\insertblocktitle\par
+            \vspace{\BlockTitlePadV}%
+        }%
+        \vspace{\BlockBodyPadV}%
+        \usebeamerfont{#5}%
+    }%
+    \defbeamertemplate*{#1 end}{rounded padded}{%
+        \vspace{\BlockBodyPadV}%
+        \end{beamerboxesrounded}%
+        \vskip\smallskipamount%
+    }%
+}
+
+% Initialize templates
+\LUdefineblock{block}
+  {block title}{block body}
+  {block title}{block body}
+
+\LUdefineblock{block alerted}
+  {block title alerted}{block body alerted}
+  {block title alerted}{block body alerted}
+
+\LUdefineblock{block example}
+  {block title example}{block body example}
+  {block title example}{block body example}
+
+% --- 3. Theme Selection Command ---
+% This command sets the colors to match the "Pastel Header / Dark Text" style
+% seen in your image.
+\newcommand{\useLUTheme}[1]{%
+    % Select accent color
+    \ifstrequal{#1}{social}{%
+        \colorlet{LUAccent}{redLU}%
+    }{%
+    \ifstrequal{#1}{science}{%
+        \colorlet{LUAccent}{orangeLU}%
+    }{%
+    \ifstrequal{#1}{humanities}{%
+        \colorlet{LUAccent}{lightgreenLU}%
+    }{%
+    \ifstrequal{#1}{archaeology}{%
+        \colorlet{LUAccent}{darkgreenLU}%
+    }{%
+    \ifstrequal{#1}{fgga}{%
+        \colorlet{LUAccent}{turquoiseLU}%
+    }{%
+    \ifstrequal{#1}{medicine}{%
+        \colorlet{LUAccent}{lightblueLU}%
+    }{%
+    \ifstrequal{#1}{law}{%
+        \colorlet{LUAccent}{violetLU}%
+    }{%
+        \colorlet{LUAccent}{iitbBlue}%
+    }}}}}}}%
+
+    % A. Update 'maincolor' so the Footer/Nav Bar updates
+    % \colorlet{maincolor}{LUAccent}
+
+    % % B. Update Standard Beamer Colors
+    % \setbeamercolor{structure}{fg=darkblueLU, bg=white}
+    % \setbeamercolor{normal text}{fg=darkblueLU, bg=white}
+    % \setbeamercolor{frametitle}{bg=white, fg=darkblueLU}
+    % \setbeamercolor{framesubtitle}{fg=midblueLU, bg=white}
+    % \setbeamercolor{title}{fg=white, bg=darkblueLU}
+    % \setbeamercolor{author}{fg=white, bg=darkblueLU}
+    
+    % Update Footer colors (Miniframes)
+    \setbeamercolor{section in head/foot}{fg=white, bg=LUAccent}
+    \setbeamercolor{mini frame}{fg=white!50!LUAccent, bg=LUAccent}
+    \setbeamercolor{mini frame in current section}{fg=white, bg=LUAccent}
+
+    % C. Update Block Colors to match the Image (Pastel Headers)
+    
+    % Definition / Standard Block
+    % Header: Pastel Blue, Text: Dark Blue
+    \setbeamercolor{block title}{fg=darkblueLU, bg=midblueLU} 
+    % Body: Very Light Gray/Blue, Text: Dark Blue
+    \setbeamercolor{block body}{fg=darkblueLU, bg=boxLU}
+    
+    % Alert Block (e.g. "Housing")
+    % Header: Pastel Orange, Text: Red/Orange
+    \setbeamercolor{block title alerted}{fg=redLU, bg=orangeLU!25!white}
+    % Body: Very Light Orange, Text: Dark Blue
+    \setbeamercolor{block body alerted}{fg=darkblueLU, bg=orangeLU!10!white}
+    \setbeamercolor{alerted text}{fg=orangeLU}
+    
+    % Example Block (e.g. "Open")
+    % Header: Pastel Green, Text: Dark Green
+    \setbeamercolor{block title example}{fg=darkgreenLU, bg=lightgreenLU!40!white}
+    % Body: Very Light Green, Text: Dark Blue
+    \setbeamercolor{block body example}{fg=darkblueLU, bg=lightgreenLU!15!white}
+
+    % D. Apply the custom Block Templates
+    \setbeamertemplate{block begin}[rounded padded]
+    \setbeamertemplate{block end}[rounded padded]
+    \setbeamertemplate{block alerted begin}[rounded padded]
+    \setbeamertemplate{block alerted end}[rounded padded]
+    \setbeamertemplate{block example begin}[rounded padded]
+    \setbeamertemplate{block example end}[rounded padded]
+}
